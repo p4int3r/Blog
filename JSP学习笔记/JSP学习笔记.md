@@ -44,7 +44,9 @@ lib文件夹，用于存放需要的jar包。
 ### JSP指令
 
 **page指令：** 通常位于jsp页面的顶端，同一个页面可以有多个page指令。
+
 **include指令：** 将一个外部文件嵌入到当前的jsp文件中，同时解析这个页面中的jsp语句。
+
 **taglib指令：** 使用标签库定义新的自定义标签，在jsp页面中启用定制行为。
 
 ### JSP注释
@@ -75,16 +77,19 @@ lib文件夹，用于存放需要的jar包。
 
 ### JSP页面生命周期
 
-**编译阶段：**servlet容器编译servlet源文件，生成servlet类。
-**初始化阶段：**加载与JSP对应的servlet类，创建其实例，并调用它的初始化方法。
-**执行阶段：**调用与JSP对应的servlet实例的服务方法。
-**销毁阶段：**调用与JSP对应的servlet实例的销毁方法，然后销毁servlet实例。
+**编译阶段：** servlet容器编译servlet源文件，生成servlet类。
+
+**初始化阶段：** 加载与JSP对应的servlet类，创建其实例，并调用它的初始化方法。
+
+**执行阶段：** 调用与JSP对应的servlet实例的服务方法。
+
+**销毁阶段：** 调用与JSP对应的servlet实例的销毁方法，然后销毁servlet实例。
 
 ## JSP内置对象
 
 JSP内置对象是Web容器创建的一组对象，不使用new关键字就可以使用的内置对象。
 
-**九大内置对象：**out, request, response, session, application, page, pageContext, exception, config
+**九大内置对象：** out, request, response, session, application, page, pageContext, exception, config
 
 ### out对象
 
