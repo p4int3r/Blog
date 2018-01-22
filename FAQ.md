@@ -30,3 +30,51 @@
 **答：** 使用以下命令：
 
     service ssh start
+
+**问：如何在Linux中查询ASCII表？**
+
+**答：** 使用以下命令：
+
+    man ascii
+
+**问：如何在Linux中配置Java环境？**
+
+**答：**
+
+（1）下载最新的Java JDK安装包；
+（2）解压缩文件并移动至`/opt`；
+
+    tar -zxvf jdk-8u91-linux-x64.tar.gz
+    mv jdk1.8.0_91 /opt
+    cd /opt/jdk1.8.0_191
+
+（3）设置环境变量，在`~/.bashrc`中添加以下内容；
+
+    export JAVA_HOME=/opt/jdk1.8.0_91
+    export CLASSPATH=.:${JAVA_HOME}/lib
+    export PATH=${JAVA_HOME}/bin:$PATH
+
+执行`source ~/.bashrc`；
+
+（4）安装并注册；
+
+    update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_91/bin/java 1
+    update-alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_91/bin/javac 1
+    update-alternatives --set java /opt/jdk1.8.0_91/bin/java
+    update-alternatives --set javac /opt/jdk1.8.0_91/bin/javac
+
+查看结果：
+
+    update-alternatives --config java
+    update-alternatives --config javac
+
+（5）测试；
+
+    java -version
+
+**问：如何在Linux中计算子网？**
+
+**答：** 使用以下命令：
+
+    ipcalc 127.0.0.1/8
+
